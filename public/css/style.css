@@ -143,6 +143,43 @@ main {
     flex-wrap: wrap;  /*будут переноситься на новую строк*/
     justify-content: center;
     align-items: flex-start;  /*выравниваться по верхнему краю*/
+    .block_img_yar, .block_img_ren, .block_img_ruz, .block_img_zoro, .block_img_my{
+        font-size: 1.4375rem;
+        line-height: 2.1875rem;
+        font-family: Roboto, sans-serif;
+        font-weight: 500;
+        color: azure;
+        text-align: center;
+        padding-left: 25px;
+    }
+
+
+    .img_ruz{
+        margin: 25px 50px;
+        width: 520px;
+        height: 520px;
+    }
+    .img_yar{
+        margin: 25px 50px;
+        width: 520px;
+        height: 520px;
+    }
+    .img_ren{
+        margin: 25px 50px;
+        width: 520px;
+        height: 520px;
+    }
+    .img_zoro{
+        margin: 25px 50px;
+        width: 520px;
+        height: 520px;
+    }
+    .img_my{
+        margin: 25px 50px;
+        width: 520px;
+        height: 520px;
+    }
+
 
     .services_title, .guarantee_title, .about_us_title, .grid_title, .services_title,.profile_title{
 
