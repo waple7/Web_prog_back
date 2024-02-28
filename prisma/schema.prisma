@@ -56,8 +56,8 @@ model TagsVacancy {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   title     String
-  myVacancy Vacancy  @relation(fields: [tagId], references: [id])
-  tagId     Int
+  myVacancy Vacancy  @relation(fields: [vacancyId], references: [id])
+  vacancyId     Int
 }
 
 model Contact {
