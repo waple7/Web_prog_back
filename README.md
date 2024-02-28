@@ -14,5 +14,4 @@ Service.Пользователь может выбрать в Service услуг
 tegsVacancy. У нас есть Id нашего тега и его заголовок, для каждой игры свой тег.
 
 Vacancy. Выставляется вакансия на сайт, заголовком,кратким описанием и тегом.
-
-![diagram.png](diagram.png)
+![diagram.png](public%2Fimg%2Fdiagram.png)
