@@ -14,4 +14,6 @@ Service.Пользователь может выбрать в Service услуг
 tegsVacancy. У нас есть Id нашего тега и его заголовок, для каждой игры свой тег.
 
 Vacancy. Выставляется вакансия на сайт, заголовком,кратким описанием и тегом.
+
+id Int @id @default(autoincrement()) // уникальное поле первичного ключа
 ![diagram.png](public%2Fimg%2Fdiagram.png)

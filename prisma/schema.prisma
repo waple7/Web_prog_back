@@ -48,15 +48,15 @@ model Vacancy {
   createdAt DateTime  @default(now())
   author    User      @relation(fields: [vacancyId], references: [id])
   vacancyId  Int
-  tegVacancy TegsVacancy[]
+  tagVacancy TagsVacancy[]
 }
 
-model TegsVacancy {
+model TagsVacancy {
   id            Int             @id @default(autoincrement())
   createdAt     DateTime        @default(now())
   title     String
-  myService     Vacancy         @relation(fields: [tegId], references: [id])
-  tegId     Int
+  myVacancy     Vacancy         @relation(fields: [tagId], references: [id])
+  tagId     Int
 }
 
 model Contact{
