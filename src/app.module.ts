@@ -7,6 +7,8 @@ import { join } from 'path';
 import { VacanciesModule } from './vacancies/vacancies.module';
 import { ProfileModule } from './profile/profile.module';
 import { OrderModule } from './order/order.module';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { TimeInterceptor } from './timing.interceptor';
 
 @Module({
   imports: [
@@ -19,6 +21,12 @@ import { OrderModule } from './order/order.module';
     OrderModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: TimeInterceptor,
+    },
+  ],
 })
 export class AppModule {}

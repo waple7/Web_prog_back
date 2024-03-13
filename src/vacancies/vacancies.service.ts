@@ -6,7 +6,7 @@ import { UpdateVacancyDto } from './dto/updateVacancy.dto';
 @Injectable()
 export default class VacanciesService {
   private lastVacancyId = 0;
-  private vacancy: Vacancy[] = [];
+  public vacancy: Vacancy[] = [];
 
   getAllVacancies() {
     return this.vacancy;
