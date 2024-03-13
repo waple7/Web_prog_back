@@ -29,8 +29,8 @@ model Service {
   title       String
   service     String
   createdAt   DateTime       @default(now())
-  customer    User           @relation(fields: [userId], references: [id])
-  userId      Int
+  customer    User           @relation(fields: [serviceId], references: [id])
+  serviceId      Int
   listService ListServices[]
 }
 

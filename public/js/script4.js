@@ -11,16 +11,16 @@ document.addEventListener('DOMContentLoaded', function () {
         Swal.fire({ // вызов окна
             title: 'Регистрация',
             html:
-                '<label for="swal_username">Имя пользователя:</label>' +
-                '<input id="swal_username" class="swal2-input" required>' +
-                '<label for="swal_email">Электронная почта:</label>' +
-                '<input id="swal_email" class="swal2-input" type="email" required>' +
-                '<label for="swal_phone">Номер телефона:</label>' +
-                '<input id="swal_phone" class="swal2-input" type="tel" required>' +
-                '<label for="swal_password">Пароль:</label>' +
-                '<input id="swal_password" class="swal2-input" type="password" required>'+
-                '<label for="swal_confirm_password">Подтвердите пароль:</label>' +
-                '<input id="swal_confirm_password" class="swal2-input" type="password" required>',
+              '<label for="swal_username">Имя пользователя:</label>' +
+              '<input id="swal_username" class="swal2-input" required>' +
+              '<label for="swal_email">Электронная почта:</label>' +
+              '<input id="swal_email" class="swal2-input" type="email" required>' +
+              '<label for="swal_phone">Номер телефона:</label>' +
+              '<input id="swal_phone" class="swal2-input" type="tel" required>' +
+              '<label for="swal_password">Пароль:</label>' +
+              '<input id="swal_password" class="swal2-input" type="password" required>'+
+              '<label for="swal_confirm_password">Подтвердите пароль:</label>' +
+              '<input id="swal_confirm_password" class="swal2-input" type="password" required>',
             focusConfirm: false,
 
             preConfirm: () => {  // выполняется перед закрытием окна

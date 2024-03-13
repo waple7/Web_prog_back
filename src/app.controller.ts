@@ -34,8 +34,8 @@ export class AppController {
       title: 'Team',
     };
   }
-  @Get('vacancies')
-  @Render('vacancies')
+  @Get('posts')
+  @Render('posts')
   getVacancies() {
     return {
       title: 'Vacancies',

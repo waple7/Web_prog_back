@@ -4,7 +4,8 @@ window.addEventListener("load", function () {
 
     if (durationElement) {
         const loadTime = performance.now();
-        durationElement.textContent = loadTime.toFixed(1) + " мс";
+        const serverTime = performance.getEntriesByType('navigation')[0].serverTiming.find(timing => timing.name === 'server');
+        durationElement.textContent = loadTime + "ms + " + serverTime.duration + "(ser) ms";
     }
 });
 
