@@ -6,7 +6,7 @@ export default class OrderService {
   private lastOrderId = 0;
   private order: Order[] = [];
 
-  getAllorders() {
+  getAllOrders() {
     return this.order;
   }
   getOrderById(id: number) {

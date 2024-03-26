@@ -1,15 +1,13 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, UsePipes, ValidationPipe } from "@nestjs/common";
 import { CreateOrderDto } from './dto/createOrder.dto';
 import OrderService from './order.service';
 import {
-  ApiBody,
   ApiOperation,
   ApiParam,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { Order } from './order.interface';
-import VacanciesService from '../vacancies/vacancies.service';
+
 @Controller('order')
 export default class OrderController {
   constructor(private readonly orderService: OrderService) {}
@@ -26,9 +24,9 @@ export default class OrderController {
   @ApiOperation({ summary: 'Get all orders' })
   @ApiResponse({ status: 200, description: 'Returns all orders.' })
   @Get()
-  @ApiBody({ type: [OrderService] }) // Описание типа данных перед функцией
+  @UsePipes(ValidationPipe)
   getAllOrders() {
-    return this.orderService.getAllorders();
+    return this.orderService.getAllOrders();
   }
 
   @ApiTags('Order')
@@ -48,6 +46,7 @@ export default class OrderController {
   })
   @ApiResponse({ status: 404, description: 'Order not found.' })
   @Get(':id')
+  @UsePipes(ValidationPipe)
   getOrderById(@Param('id') id: string) {
     return this.orderService.getOrderById(Number(id));
   }
@@ -69,7 +68,8 @@ export default class OrderController {
     status: 401,
     description: 'The user is not authorized to perform this action.',
   })
-  @Post()
+  @Post(':id')
+  @UsePipes(ValidationPipe)
   async createOrder(@Body() order: CreateOrderDto) {
     return this.orderService.createOrder(order);
   }
@@ -91,6 +91,7 @@ export default class OrderController {
     description: 'The user is not authorized to perform this action.',
   })
   @ApiResponse({ status: 404, description: 'Order not found.' })
+  @UsePipes(ValidationPipe)
   @Delete(':id')
   async deleteOrder(@Param('id') id: string) {
     this.orderService.deleteOrder(Number(id));

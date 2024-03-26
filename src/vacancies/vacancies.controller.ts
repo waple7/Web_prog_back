@@ -5,8 +5,8 @@ import {
   Get,
   Param,
   Post,
-  Put,
-} from '@nestjs/common';
+  Put, UsePipes, ValidationPipe
+} from "@nestjs/common";
 import VacanciesService from './vacancies.service';
 import { CreateVacancyDto } from './dto/createVacancy.dto';
 import { UpdateVacancyDto } from './dto/updateVacancy.dto';
@@ -22,7 +22,6 @@ import {
 export default class VacanciesController {
   constructor(private readonly vacanciesService: VacanciesService) {}
 
-  @ApiBody({ type: [VacanciesService] })
   @ApiTags('Vacancies')
   @ApiOperation({ summary: 'Get all vacancies' })
   @ApiResponse({
@@ -35,6 +34,7 @@ export default class VacanciesController {
   })
   @ApiResponse({ status: 200, description: 'Returns all vacancies.' })
   @Get()
+  @UsePipes(ValidationPipe)
   getAllVacancies() {
     return this.vacanciesService.getAllVacancies();
   }
@@ -55,6 +55,7 @@ export default class VacanciesController {
     status: 401,
     description: 'The user is not authorized to perform this action.',
   })
+  @UsePipes(ValidationPipe)
   @Get(':id')
   getVacancyById(@Param('id') id: string) {
     return this.vacanciesService.getVacancyById(Number(id));
@@ -76,8 +77,9 @@ export default class VacanciesController {
     status: 201,
     description: 'The vacancy has been successfully created.',
   })
-  @Post()
+  @Post(':id')
   @ApiParam({ name: 'id', type: 'number' })
+  @UsePipes(ValidationPipe)
   async createVacancy(@Body() post: CreateVacancyDto) {
     return this.vacanciesService.createVacancy(post);
   }
@@ -100,8 +102,9 @@ export default class VacanciesController {
   })
   @ApiResponse({ status: 404, description: 'Vacancy not found.' })
   @Put(':id')
+  @UsePipes(ValidationPipe)
   async replaceVacancy(
-    @Param('id') id: string,
+    @Param('id') id: number,
     @Body() post: UpdateVacancyDto,
   ) {
     return this.vacanciesService.replaceVacancy(Number(id), post);
@@ -126,6 +129,7 @@ export default class VacanciesController {
   })
   @ApiResponse({ status: 404, description: 'Vacancy not found.' })
   @Delete(':id')
+  @UsePipes(ValidationPipe)
   async deleteVacancy(@Param('id') id: string) {
     this.vacanciesService.deleteVacancy(Number(id));
   }
