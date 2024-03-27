@@ -2,15 +2,16 @@ import {
   HttpException, HttpStatus,
   Injectable,
   NotFoundException
-} from "@nestjs/common";
+} from '@nestjs/common';
 import { Profile } from './profile.interface';
 import { CreateProfileDto } from './dto/createProfile.dto';
+import { UpdateProfileDto } from './dto/updateProfile.dto';
 
 @Injectable()
 export class ProfileService {
   private lastProfileId = 0;
   private profile: Profile[] = [];
-  // private profiles: Profile[] = [
+  // private profile: Profile[] = [
   //   {
   //     id: 1,
   //     username: 'user1',
@@ -56,5 +57,13 @@ export class ProfileService {
     } else {
       throw new HttpException('profile not found', HttpStatus.NOT_FOUND);
     }
+  }
+  updateProfile(id: number, profile: UpdateProfileDto) {
+    const profileIndex = this.profile.findIndex((profile) => profile.id === id);
+    if (profileIndex > -1) {
+      this.profile[profileIndex] = profile;
+      return profile;
+    }
+    throw new HttpException('Profile not found', HttpStatus.NOT_FOUND);
   }
 }

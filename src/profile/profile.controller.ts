@@ -1,7 +1,9 @@
-import { Body, Controller, Delete, Get, Param, Post, UsePipes, ValidationPipe } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, UsePipes, ValidationPipe } from "@nestjs/common";
 import { ProfileService } from './profile.service';
-import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { CreateProfileDto } from './dto/createProfile.dto';
+import { UpdateVacancyDto } from "../vacancies/dto/updateVacancy.dto";
+import { UpdateProfileDto } from "./dto/updateProfile.dto";
 
 @Controller('/profile')
 export default class ProfileController {
@@ -46,7 +48,6 @@ export default class ProfileController {
 
   @ApiTags('Profile')
   @ApiOperation({ summary: 'Create new profile' })
-  @ApiParam({ name: 'id', type: 'string' })
   @ApiResponse({
     status: 201,
     description: 'The profile has been successfully created.',
@@ -57,7 +58,18 @@ export default class ProfileController {
   })
   @Post(':id')
   @UsePipes(ValidationPipe)
-  async createOrder(@Body() profile: CreateProfileDto) {
+  @ApiBody({
+    type: CreateProfileDto,
+    schema: {
+      example: {
+        username: 'john_doe',
+        password: 'password123',
+        email: 'john@example.com',
+        // Другие поля вашего DTO
+      },
+    },
+  })
+  async createProfile(@Body() profile: CreateProfileDto) {
     return this.profileService.createProfile(profile);
   }
 
@@ -79,7 +91,25 @@ export default class ProfileController {
   @ApiResponse({ status: 404, description: 'profile not found.' })
   @UsePipes(ValidationPipe)
   @Delete(':id')
-  async deleteOrder(@Param('id') id: string) {
+  async deleteProfile(@Param('id') id: string) {
     this.profileService.deleteProfile(Number(id));
+  }
+
+  @ApiTags('Profile')
+  @ApiOperation({ summary: 'Update existing profile' })
+  @ApiParam({ name: 'id', type: 'number' })
+  @ApiResponse({
+    status: 200,
+    description: 'The profile has been successfully updated.',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'The user is not authorized to perform this action.',
+  })
+  @ApiResponse({ status: 404, description: 'Profile not found.' })
+  @Put(':id')
+  @UsePipes(ValidationPipe)
+  async updateProfile(@Param('id') id: number, @Body() post: UpdateProfileDto) {
+    return this.profileService.updateProfile(Number(id), post);
   }
 }

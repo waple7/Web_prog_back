@@ -14,15 +14,16 @@ export class TimeInterceptor implements NestInterceptor {
     return next.handle().pipe(
       // цепочка обработки запросов
       tap(() => {
-        // tap(): это оператор, который позволяет выполнить побочное действие(без измен данных потока)
-
+        // tap():(для вып побочных действий) выполняются после завершения обработки запроса,и добавляют HTTP заголовок Server-Timing к ответу
+        // результат выполнения next.handle() не изменяется,  (результат потока данных не изменится)
         const dif = Date.now() - now;
-        const response = context.switchToHttp().getResponse();
+        const response = context.switchToHttp().getResponse(); //возвращает объект http
         response.header('Server-Timing', `server;dur=${dif}`);
       }),
     );
   }
 }
-// header() метод объекта ответа, который используется для установки HTTP заголовков.
+// header() метод объекта ответа, который используется для установки HTTP заголовков.Server-Timing к ответу
 // server;dur=${dif} значение, которое устанавливается для HTTP заголовка Server-Timing.
 // имя http заголовка Server-Timing
+// Интерсептор в контексте  позволяет перехватывать запросы и ответы в рамках обработки HTTP запросов

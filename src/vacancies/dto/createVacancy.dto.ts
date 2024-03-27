@@ -1,5 +1,12 @@
+import { ApiProperty } from '@nestjs/swagger';
+import { IsString } from 'class-validator';
+
 export class CreateVacancyDto {
+  @ApiProperty()
+  @IsString()
   content: string;
+  @ApiProperty()
+  @IsString()
   title: string;
 }
 // Data Transfer Objects (DTOs)
