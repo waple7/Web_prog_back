@@ -5,8 +5,10 @@ import {
   Get,
   Param,
   Post,
-  Put, UsePipes, ValidationPipe
-} from "@nestjs/common";
+  Put,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import VacanciesService from './vacancies.service';
 import { CreateVacancyDto } from './dto/createVacancy.dto';
 import { UpdateVacancyDto } from './dto/updateVacancy.dto';

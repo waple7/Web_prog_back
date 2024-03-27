@@ -1,7 +1,8 @@
 import {
-  HttpException, HttpStatus,
+  HttpException,
+  HttpStatus,
   Injectable,
-  NotFoundException
+  NotFoundException,
 } from '@nestjs/common';
 import { Profile } from './profile.interface';
 import { CreateProfileDto } from './dto/createProfile.dto';
@@ -11,22 +12,7 @@ import { UpdateProfileDto } from './dto/updateProfile.dto';
 export class ProfileService {
   private lastProfileId = 0;
   private profile: Profile[] = [];
-  // private profile: Profile[] = [
-  //   {
-  //     id: 1,
-  //     username: 'user1',
-  //     email: 'user1@minecraft.com',
-  //     fullName: 'User biba',
-  //     createdAt: new Date(),
-  //   },
-  //   {
-  //     id: 2,
-  //     username: 'user2',
-  //     email: 'user2@minecraft.com',
-  //     fullName: 'User boba',
-  //     createdAt: new Date(),
-  //   },
-  // ];
+
   getAllProfiles() {
     return this.profile;
   }

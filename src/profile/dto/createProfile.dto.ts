@@ -4,13 +4,16 @@ export class CreateProfileDto {
   @ApiProperty()
   @IsString()
   username: string;
+
   @IsString()
   @ApiProperty()
   @IsString()
   password: string;
+
   @ApiProperty()
   @IsString()
   description: string;
+
   @ApiProperty()
   @IsEmail()
   email: string;

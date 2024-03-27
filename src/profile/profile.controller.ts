@@ -1,9 +1,25 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UsePipes, ValidationPipe } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { ProfileService } from './profile.service';
-import { ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from "@nestjs/swagger";
+import {
+  ApiBody,
+  ApiOperation,
+  ApiParam,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { CreateProfileDto } from './dto/createProfile.dto';
-import { UpdateVacancyDto } from "../vacancies/dto/updateVacancy.dto";
-import { UpdateProfileDto } from "./dto/updateProfile.dto";
+import { UpdateVacancyDto } from '../vacancies/dto/updateVacancy.dto';
+import { UpdateProfileDto } from './dto/updateProfile.dto';
 
 @Controller('/profile')
 export default class ProfileController {

@@ -9,7 +9,8 @@ import { tap } from 'rxjs/operators';
 
 @Injectable() // внедрение зависимости, может быть внедрен в другие компоненты или контроллеры
 export class TimeInterceptor implements NestInterceptor {
-  intercept(context: ExecutionContext, next: CallHandler): Observable<any> { //Метод intercept перехватывает запрос и обрабатывает его.
+  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+    //Метод intercept перехватывает запрос и обрабатывает его.
     const now = Date.now();
     return next.handle().pipe(
       // цепочка обработки запросов
