@@ -18,7 +18,6 @@ model User {
   name      String
   password  String
   email     String    @unique
-  createdAt DateTime  @default(now())
   vacancys  Vacancy[]
   services  Service[]
   contacts  Contact[]
@@ -28,7 +27,6 @@ model Service {
   id          Int            @id @default(autoincrement())
   title       String
   service     String
-  createdAt   DateTime       @default(now())
   authorId   Int?
   author     User?     @relation(fields: [authorId], references: [id])
   listService ListServices[]
@@ -38,7 +36,6 @@ model Service {
 
 model ListServices {
   id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
   title     String
   myService Service  @relation(fields: [serviceId], references: [id])
   serviceId Int
@@ -48,7 +45,6 @@ model Vacancy {
   id         Int           @id @default(autoincrement())
   title      String
   content    String
-  createdAt  DateTime      @default(now())
   authorId   Int?
   author     User?     @relation(fields: [authorId], references: [id])
   tagVacancy TagsVacancy[]
@@ -56,7 +52,6 @@ model Vacancy {
 
 model TagsVacancy {
   id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
   title     String
   myVacancy Vacancy  @relation(fields: [vacancyId], references: [id])
   vacancyId     Int
@@ -66,7 +61,6 @@ model Contact {
   id        Int      @id @default(autoincrement())
   email     String
   role      String
-  createdAt DateTime @default(now())
   author    User     @relation(fields: [userId], references: [id])
   userId    Int
 }

@@ -11,6 +11,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 import { TimeInterceptor } from './timing.interceptor';
 import { PrismaService } from './prisma.service';
 import { DatabaseModule } from './database.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { DatabaseModule } from './database.module';
     OrderModule,
     ProfileModule,
     DatabaseModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [
