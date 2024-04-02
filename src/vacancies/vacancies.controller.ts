@@ -19,8 +19,9 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { UpdateProfileDto } from "../profile/dto/updateProfile.dto";
 
-@Controller('vacancies')
+@Controller('vacancy')
 export default class VacanciesController {
   constructor(private readonly vacanciesService: VacanciesService) {}
 
@@ -80,10 +81,9 @@ export default class VacanciesController {
     description: 'The vacancy has been successfully created.',
   })
   @Post(':id')
-  @ApiParam({ name: 'id', type: 'number' })
   @UsePipes(ValidationPipe)
-  async createVacancy(@Body() post: CreateVacancyDto) {
-    return this.vacanciesService.createVacancy(post);
+  async createVacancy(@Body() vacancy: CreateVacancyDto) {
+    return this.vacanciesService.createVacancy(vacancy);
   }
   // POST. Используется для отправки данных на сервер с целью создания новой сущности (в данном случае, нового поста).
   //   // Декоратор @Body(): Извлекает данные из тела запроса
@@ -105,11 +105,11 @@ export default class VacanciesController {
   @ApiResponse({ status: 404, description: 'Vacancy not found.' })
   @Put(':id')
   @UsePipes(ValidationPipe)
-  async replaceVacancy(
+  async updateVacancy(
     @Param('id') id: number,
-    @Body() post: UpdateVacancyDto,
+    @Body() vacancy: UpdateVacancyDto,
   ) {
-    return this.vacanciesService.replaceVacancy(Number(id), post);
+    return this.vacanciesService.updateVacancy(Number(id), vacancy);
   }
   // замена (обновление) существующего поста в системе
   // @Body() используется для извлечения тела запроса

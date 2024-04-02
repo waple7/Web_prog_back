@@ -7,49 +7,71 @@ import {
 import { Profile } from './profile.interface';
 import { CreateProfileDto } from './dto/createProfile.dto';
 import { UpdateProfileDto } from './dto/updateProfile.dto';
+import { PrismaClient } from '@prisma/client';
+import { Order } from '../order/order.interface';
+import { CreateOrderDto } from '../order/dto/createOrder.dto';
 
 @Injectable()
 export class ProfileService {
-  private lastProfileId = 0;
-  private profile: Profile[] = [];
+  // private lastProfileId = 0;
+  // private profile: Profile[] = [];
+  constructor(private readonly prisma: PrismaClient) {}
 
-  getAllProfiles() {
-    return this.profile;
+  async getAllProfiles(
+    page: number,
+    limit: number,
+  ): Promise<{ profiles: Profile[]; totalCount: number }> {
+    const skip = (page - 1) * limit;
+    const [profiles, totalCount] = await Promise.all([
+      this.prisma.user.findMany({ take: limit, skip }),
+      this.prisma.user.count(),
+    ]);
+    if (!profiles || profiles.length === 0) {
+      throw new NotFoundException();
+    }
+    return { profiles, totalCount };
   }
-  getProfileById(id: number): Profile {
-    const profile = this.profile.find((profile) => profile.id === id);
+
+  async getProfileById(profileId: number): Promise<Profile | null> {
+    const profile = await this.prisma.user.findUnique({
+      where: { id: profileId },
+    });
     if (!profile) {
-      throw new NotFoundException('Profile not found');
+      throw new NotFoundException();
     }
     return profile;
   }
-
-  createProfile(profile: CreateProfileDto) {
-    const newProfile = {
-      id: ++this.lastProfileId,
-      username: profile.username,
-      password: profile.password,
-      description: profile.description,
-      email: profile.email,
-    };
-    this.profile.push(newProfile);
-    return newProfile;
+  async createProfile(profileData: CreateProfileDto): Promise<Profile> {
+    return this.prisma.user.create({
+      data: {
+        name: profileData.name,
+        password: profileData.password,
+        email: profileData.email,
+      },
+    });
   }
-
-  deleteProfile(id: number) {
-    const profileIndex = this.profile.findIndex((profile) => profile.id === id);
-    if (profileIndex > -1) {
-      this.profile.splice(profileIndex, 1);
-    } else {
-      throw new HttpException('profile not found', HttpStatus.NOT_FOUND);
+  async deleteProfile(profileID: number): Promise<void> {
+    const profile = await this.prisma.user.findUnique({
+      where: { id: profileID },
+    });
+    if (!profile) {
+      throw new NotFoundException();
     }
+    await this.prisma.user.delete({ where: { id: profileID } });
   }
-  updateProfile(id: number, profile: UpdateProfileDto) {
-    const profileIndex = this.profile.findIndex((profile) => profile.id === id);
-    if (profileIndex > -1) {
-      this.profile[profileIndex] = profile;
-      return profile;
+  async updateProfile(
+    profileID: number,
+    profileData: UpdateProfileDto,
+  ): Promise<Profile> {
+    const profile = await this.prisma.user.findUnique({
+      where: { id: profileID },
+    });
+    if (!profile) {
+      throw new NotFoundException();
     }
-    throw new HttpException('Profile not found', HttpStatus.NOT_FOUND);
+    return this.prisma.user.update({
+      where: { id: profileID },
+      data: profileData,
+    });
   }
 }

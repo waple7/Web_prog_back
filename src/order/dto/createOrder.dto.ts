@@ -1,19 +1,24 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsInt, IsString } from 'class-validator';
+import { IsInt, IsNotEmpty, IsString } from "class-validator";
 
 export class CreateOrderDto {
   @ApiProperty()
-  @IsString()
-  content: string;
-  @ApiProperty()
-  @IsString()
   title: string;
+
   @ApiProperty()
-  @IsString()
+  service: string;
+
+  @ApiProperty()
+  @ApiProperty()
   description: string;
+
   @ApiProperty()
-  @IsInt()
   price: number;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsInt()
+  authorId: number;
 }
 // Data Transfer Objects (DTOs)
 // DTOs служат для структурирования данных, которые передаются между клиентом и сервером

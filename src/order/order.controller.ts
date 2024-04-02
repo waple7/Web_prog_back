@@ -5,13 +5,15 @@ import {
   Get,
   Param,
   Post,
+  Put,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 import { CreateOrderDto } from './dto/createOrder.dto';
 import OrderService from './order.service';
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
-
+import { UpdateVacancyDto } from "../vacancies/dto/updateVacancy.dto";
+import { UpdateOrderDto } from "./dto/updateOrder.dto";
 @Controller('order')
 export default class OrderController {
   constructor(private readonly orderService: OrderService) {}
@@ -59,7 +61,6 @@ export default class OrderController {
 
   @ApiTags('Order')
   @ApiOperation({ summary: 'Create new order' })
-  @ApiParam({ name: 'id', type: 'string' })
   @ApiResponse({
     status: 201,
     description: 'The order has been successfully created.',
@@ -99,5 +100,26 @@ export default class OrderController {
   @Delete(':id')
   async deleteOrder(@Param('id') id: string) {
     this.orderService.deleteOrder(Number(id));
+  }
+  @ApiTags('Order')
+  @ApiOperation({ summary: 'Replace existing order' })
+  @ApiParam({ name: 'id', type: 'number' })
+  @ApiResponse({
+    status: 200,
+    description: 'The order has been successfully replaced.',
+  })
+  @ApiResponse({
+    status: 403,
+    description: 'The user does not have access to create an order.',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'The user is not authorized to perform this action.',
+  })
+  @ApiResponse({ status: 404, description: 'Vacancy not found.' })
+  @Put(':id')
+  @UsePipes(ValidationPipe)
+  async updateOrder(@Param('id') id: number, @Body() order: UpdateOrderDto) {
+    return this.orderService.updateOrder(Number(id), order);
   }
 }

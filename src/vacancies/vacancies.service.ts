@@ -1,49 +1,74 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from "@nestjs/common";
 import { CreateVacancyDto } from './dto/createVacancy.dto';
 import { Vacancy } from './vacancy.interface';
 import { UpdateVacancyDto } from './dto/updateVacancy.dto';
+import { PrismaClient } from "@prisma/client";
+import { Profile } from "../profile/profile.interface";
+import { CreateProfileDto } from "../profile/dto/createProfile.dto";
+import { UpdateProfileDto } from "../profile/dto/updateProfile.dto";
 
 @Injectable()
 export default class VacanciesService {
-  private lastVacancyId = 0;
-  public vacancy: Vacancy[] = [];
-
-  getAllVacancies() {
-    return this.vacancy;
+  constructor(private readonly prisma: PrismaClient) {
   }
 
-  getVacancyById(id: number) {
-    const vacancy = this.vacancy.find((vacancy) => vacancy.id === id);
-    if (vacancy) {
-      return vacancy;
+  async getAllVacancies(): Promise<Vacancy[]> {
+    const vacancies = await this.prisma.vacancy.findMany();
+    if (!vacancies || vacancies.length === 0) {
+      throw new NotFoundException();
     }
-    throw new HttpException('Vacancy not found', HttpStatus.NOT_FOUND);
+    return vacancies;
   }
 
-  replaceVacancy(id: number, vacancy: UpdateVacancyDto) {
-    const vacancyIndex = this.vacancy.findIndex((vacancy) => vacancy.id === id);
-    if (vacancyIndex > -1) {
-      this.vacancy[vacancyIndex] = vacancy;
-      return vacancy;
+  async getVacancyById(vacancyId: number): Promise<Vacancy | null> {
+    const vacancy = await this.prisma.vacancy.findUnique({
+      where: { id: vacancyId },
+    });
+    if (!vacancy) {
+      throw new NotFoundException();
     }
-    throw new HttpException('Vacancy not found', HttpStatus.NOT_FOUND);
+    return vacancy;
   }
 
-  createVacancy(vacancy: CreateVacancyDto) {
-    const newVacancy = {
-      id: ++this.lastVacancyId,
-      ...vacancy,
-    };
-    this.vacancy.push(newVacancy);
-    return newVacancy;
+  async createVacancy(vacancyData: CreateVacancyDto): Promise<Vacancy> {
+    return this.prisma.vacancy.create({
+      data: {
+        content: vacancyData.content,
+        title: vacancyData.title,
+        author: {
+          connect: { id: vacancyData.authorId },
+        },
+      },
+    });
   }
 
-  deleteVacancy(id: number) {
-    const vacancyIndex = this.vacancy.findIndex((vacancy) => vacancy.id === id);
-    if (vacancyIndex > -1) {
-      this.vacancy.splice(vacancyIndex, 1);
-    } else {
-      throw new HttpException('Vacancy not found', HttpStatus.NOT_FOUND);
+  async deleteVacancy(vacancyID: number): Promise<void> {
+    const vacancy = await this.prisma.vacancy.findUnique({
+      where: { id: vacancyID },
+    });
+    if (!vacancy) {
+      throw new NotFoundException();
     }
+    await this.prisma.vacancy.delete({ where: { id: vacancyID } });
+  }
+
+  async updateVacancy(
+    vacancyId: number,
+    vacancyData: UpdateVacancyDto,
+  ): Promise<Vacancy> {
+    const vacancy = await this.prisma.vacancy.findUnique({
+      where: { id: vacancyId },
+    });
+    if (!vacancy) {
+      throw new NotFoundException();
+    }
+    return this.prisma.vacancy.update({
+      where: { id: vacancyId },
+      data: {
+        content: vacancyData.content,
+        title: vacancyData.title,
+        author: { connect: { id: vacancyData.authorId } }, // Устанавливаем связь с пользователем (автором)
+      },
+    });
   }
 }

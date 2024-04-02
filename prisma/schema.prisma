@@ -29,9 +29,11 @@ model Service {
   title       String
   service     String
   createdAt   DateTime       @default(now())
-  customer    User           @relation(fields: [serviceId], references: [id])
-  serviceId      Int
+  authorId   Int?
+  author     User?     @relation(fields: [authorId], references: [id])
   listService ListServices[]
+  description String
+  price Int
 }
 
 model ListServices {
@@ -47,8 +49,8 @@ model Vacancy {
   title      String
   content    String
   createdAt  DateTime      @default(now())
-  author     User          @relation(fields: [vacancyId], references: [id])
-  vacancyId  Int
+  authorId   Int?
+  author     User?     @relation(fields: [authorId], references: [id])
   tagVacancy TagsVacancy[]
 }
 
