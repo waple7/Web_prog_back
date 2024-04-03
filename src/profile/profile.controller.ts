@@ -7,6 +7,7 @@ import {
   Post,
   Put,
   Query,
+  UseFilters,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -22,6 +23,8 @@ import { CreateProfileDto } from './dto/createProfile.dto';
 import { UpdateVacancyDto } from '../vacancies/dto/updateVacancy.dto';
 import { UpdateProfileDto } from './dto/updateProfile.dto';
 import { Profile } from './profile.interface';
+import { CustomExceptionFilter } from '../order/exceptionOrder/exceptions';
+import { ProfileExceptionFilter } from './exceptionProfile/exceptions';
 
 @Controller('/profile')
 export default class ProfileController {
@@ -31,6 +34,7 @@ export default class ProfileController {
     status: 401,
     description: 'The user is not authorized to perform this action.',
   })
+  @UseFilters(ProfileExceptionFilter)
   @ApiOperation({ summary: 'Get all profiles' })
   @ApiResponse({ status: 200, description: 'Returns all profiles.' })
   @Get()
@@ -63,6 +67,7 @@ export default class ProfileController {
   })
   @UsePipes(ValidationPipe)
   @Get(':id')
+  @UseFilters(ProfileExceptionFilter)
   getProfileById(@Param('id') id: number) {
     return this.profileService.getProfileById(Number(id));
   }
@@ -89,6 +94,7 @@ export default class ProfileController {
       },
     },
   })
+  @UseFilters(ProfileExceptionFilter)
   async createProfile(@Body() profile: CreateProfileDto) {
     return this.profileService.createProfile(profile);
   }
@@ -111,6 +117,7 @@ export default class ProfileController {
   @ApiResponse({ status: 404, description: 'profile not found.' })
   @UsePipes(ValidationPipe)
   @Delete(':id')
+  @UseFilters(ProfileExceptionFilter)
   async deleteProfile(@Param('id') id: string) {
     this.profileService.deleteProfile(Number(id));
   }
@@ -129,6 +136,7 @@ export default class ProfileController {
   @ApiResponse({ status: 404, description: 'Profile not found.' })
   @Put(':id')
   @UsePipes(ValidationPipe)
+  @UseFilters(ProfileExceptionFilter)
   async updateProfile(
     @Param('id') id: number,
     @Body() profile: UpdateProfileDto,

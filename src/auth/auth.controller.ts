@@ -1,10 +1,10 @@
-import { Body, Controller, Post, UseGuards } from "@nestjs/common";
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateProfileDto } from '../profile/dto/createProfile.dto';
 import { UserLoginDto } from './dto/UserLoginDto';
 import { AuthUserResponse } from './response/AuthUserResponse';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from "../guards/jwt-guard";
+import { JwtAuthGuard } from '../guards/jwt-guard';
 
 @Controller('auth')
 export class AuthController {
@@ -43,8 +43,14 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   // этот роут защищен гвардом который требует чтобы пользователь был
   // авторизован
-  @Post('test')
-  test() {
+  @ApiTags('Auth')
+  @ApiResponse({
+    status: 200,
+    description: 'user is authorized',
+    // type: AuthUserResponse,
+  })
+  @Post('authGuard')
+  authGuard() {
     return true;
   }
 }

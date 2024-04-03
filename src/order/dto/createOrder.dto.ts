@@ -3,16 +3,23 @@ import { IsInt, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateOrderDto {
   @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
   title: string;
 
   @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
   service: string;
 
   @ApiProperty()
-  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
   description: string;
 
   @ApiProperty()
+  @IsInt()
+  @IsNotEmpty()
   price: number;
 
   @ApiProperty()

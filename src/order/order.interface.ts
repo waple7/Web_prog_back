@@ -1,18 +1,25 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsInt, IsNotEmpty } from 'class-validator';
+import { IsInt, IsNotEmpty, IsString } from 'class-validator';
 
 export class Order {
   @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
   title: string;
 
   @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
   service: string;
 
   @ApiProperty()
-  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
   description: string;
 
   @ApiProperty()
+  @IsInt()
+  @IsNotEmpty()
   price: number;
 
   @ApiProperty()

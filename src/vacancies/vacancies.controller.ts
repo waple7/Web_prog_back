@@ -7,6 +7,7 @@ import {
   Post,
   Put,
   Query,
+  UseFilters,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -23,6 +24,8 @@ import {
 import { UpdateProfileDto } from '../profile/dto/updateProfile.dto';
 import { Profile } from '../profile/profile.interface';
 import { Vacancy } from './vacancy.interface';
+import { ProfileExceptionFilter } from '../profile/exceptionProfile/exceptions';
+import { VacancyExceptionFilter } from './exceptionVacancy/exceptions';
 
 @Controller('vacancy')
 export default class VacanciesController {
@@ -41,6 +44,7 @@ export default class VacanciesController {
   @ApiResponse({ status: 200, description: 'Returns all vacancies.' })
   @Get()
   @UsePipes(ValidationPipe)
+  @UseFilters(VacancyExceptionFilter)
   async getAllVacancies(
     @Query('page') page: number = 1,
   ): Promise<{ vacancies: Vacancy[]; totalCount: number }> {
@@ -65,6 +69,7 @@ export default class VacanciesController {
   })
   @UsePipes(ValidationPipe)
   @Get(':id')
+  @UseFilters(VacancyExceptionFilter)
   getVacancyById(@Param('id') id: string) {
     return this.vacanciesService.getVacancyById(Number(id));
   }
@@ -87,6 +92,7 @@ export default class VacanciesController {
   })
   @Post(':id')
   @UsePipes(ValidationPipe)
+  @UseFilters(VacancyExceptionFilter)
   async createVacancy(@Body() vacancy: CreateVacancyDto) {
     return this.vacanciesService.createVacancy(vacancy);
   }
@@ -110,6 +116,7 @@ export default class VacanciesController {
   @ApiResponse({ status: 404, description: 'Vacancy not found.' })
   @Put(':id')
   @UsePipes(ValidationPipe)
+  @UseFilters(VacancyExceptionFilter)
   async updateVacancy(
     @Param('id') id: number,
     @Body() vacancy: UpdateVacancyDto,
@@ -137,6 +144,7 @@ export default class VacanciesController {
   @ApiResponse({ status: 404, description: 'Vacancy not found.' })
   @Delete(':id')
   @UsePipes(ValidationPipe)
+  @UseFilters(VacancyExceptionFilter)
   async deleteVacancy(@Param('id') id: string) {
     this.vacanciesService.deleteVacancy(Number(id));
   }

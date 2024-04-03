@@ -1,7 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsInt, IsString } from 'class-validator';
+import { IsEmail, IsInt, IsNotEmpty, IsString } from 'class-validator';
 export class CreateProfileDto {
   @ApiProperty()
+  @IsNotEmpty()
   @IsString()
   name: string;
 
@@ -12,6 +13,8 @@ export class CreateProfileDto {
 
   @ApiProperty()
   @IsEmail()
+  @IsNotEmpty()
+  @IsString()
   email: string;
 }
 // Data Transfer Objects (DTOs)

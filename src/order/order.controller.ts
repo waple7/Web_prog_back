@@ -7,6 +7,7 @@ import {
   Post,
   Put,
   Query,
+  UseFilters,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -17,6 +18,7 @@ import { UpdateVacancyDto } from '../vacancies/dto/updateVacancy.dto';
 import { UpdateOrderDto } from './dto/updateOrder.dto';
 import { Profile } from '../profile/profile.interface';
 import { Order } from './order.interface';
+import { CustomExceptionFilter } from './exceptionOrder/exceptions';
 @Controller('order')
 export default class OrderController {
   constructor(private readonly orderService: OrderService) {}
@@ -34,6 +36,7 @@ export default class OrderController {
   @ApiResponse({ status: 200, description: 'Returns all orders.' })
   @Get()
   @UsePipes(ValidationPipe)
+  @UseFilters(CustomExceptionFilter)
   async getAllOrders(
     @Query('page') page: number = 1,
   ): Promise<{ orders: Order[]; totalCount: number }> {
@@ -58,6 +61,7 @@ export default class OrderController {
   @ApiResponse({ status: 404, description: 'Order not found.' })
   @Get(':id')
   @UsePipes(ValidationPipe)
+  @UseFilters(CustomExceptionFilter)
   getOrderById(@Param('id') id: string) {
     return this.orderService.getOrderById(Number(id));
   }
@@ -80,6 +84,7 @@ export default class OrderController {
   })
   @Post(':id')
   @UsePipes(ValidationPipe)
+  @UseFilters(CustomExceptionFilter)
   async createOrder(@Body() order: CreateOrderDto) {
     return this.orderService.createOrder(order);
   }
@@ -103,6 +108,7 @@ export default class OrderController {
   @ApiResponse({ status: 404, description: 'Order not found.' })
   @UsePipes(ValidationPipe)
   @Delete(':id')
+  @UseFilters(CustomExceptionFilter)
   async deleteOrder(@Param('id') id: string) {
     this.orderService.deleteOrder(Number(id));
   }
@@ -124,6 +130,7 @@ export default class OrderController {
   @ApiResponse({ status: 404, description: 'Vacancy not found.' })
   @Put(':id')
   @UsePipes(ValidationPipe)
+  @UseFilters(CustomExceptionFilter)
   async updateOrder(@Param('id') id: number, @Body() order: UpdateOrderDto) {
     return this.orderService.updateOrder(Number(id), order);
   }
