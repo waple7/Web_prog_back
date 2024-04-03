@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -19,7 +20,9 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { UpdateProfileDto } from "../profile/dto/updateProfile.dto";
+import { UpdateProfileDto } from '../profile/dto/updateProfile.dto';
+import { Profile } from '../profile/profile.interface';
+import { Vacancy } from './vacancy.interface';
 
 @Controller('vacancy')
 export default class VacanciesController {
@@ -38,8 +41,10 @@ export default class VacanciesController {
   @ApiResponse({ status: 200, description: 'Returns all vacancies.' })
   @Get()
   @UsePipes(ValidationPipe)
-  getAllVacancies() {
-    return this.vacanciesService.getAllVacancies();
+  async getAllVacancies(
+    @Query('page') page: number = 1,
+  ): Promise<{ vacancies: Vacancy[]; totalCount: number }> {
+    return this.vacanciesService.getAllVacancies(page);
   }
 
   @ApiTags('Vacancies')

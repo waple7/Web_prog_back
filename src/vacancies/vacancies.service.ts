@@ -1,23 +1,33 @@
-import { HttpException, HttpStatus, Injectable, NotFoundException } from "@nestjs/common";
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateVacancyDto } from './dto/createVacancy.dto';
 import { Vacancy } from './vacancy.interface';
 import { UpdateVacancyDto } from './dto/updateVacancy.dto';
-import { PrismaClient } from "@prisma/client";
-import { Profile } from "../profile/profile.interface";
-import { CreateProfileDto } from "../profile/dto/createProfile.dto";
-import { UpdateProfileDto } from "../profile/dto/updateProfile.dto";
+import { PrismaClient } from '@prisma/client';
+import { Profile } from '../profile/profile.interface';
+import { CreateProfileDto } from '../profile/dto/createProfile.dto';
+import { UpdateProfileDto } from '../profile/dto/updateProfile.dto';
+import { Order } from '../order/order.interface';
 
 @Injectable()
 export default class VacanciesService {
-  constructor(private readonly prisma: PrismaClient) {
-  }
+  constructor(private readonly prisma: PrismaClient) {}
 
-  async getAllVacancies(): Promise<Vacancy[]> {
-    const vacancies = await this.prisma.vacancy.findMany();
+  async getAllVacancies(
+    page: number,
+  ): Promise<{ vacancies: Vacancy[]; totalCount: number }> {
+    const limit = 10;
+    const skip = (page - 1) * limit;
+    const vacancies = await this.prisma.vacancy.findMany({ take: limit, skip });
+    const totalCount = await this.prisma.vacancy.count();
     if (!vacancies || vacancies.length === 0) {
       throw new NotFoundException();
     }
-    return vacancies;
+    return { vacancies, totalCount };
   }
 
   async getVacancyById(vacancyId: number): Promise<Vacancy | null> {

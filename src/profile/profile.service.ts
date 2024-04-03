@@ -19,13 +19,11 @@ export class ProfileService {
 
   async getAllProfiles(
     page: number,
-    limit: number,
   ): Promise<{ profiles: Profile[]; totalCount: number }> {
+    const limit = 10;
     const skip = (page - 1) * limit;
-    const [profiles, totalCount] = await Promise.all([
-      this.prisma.user.findMany({ take: limit, skip }),
-      this.prisma.user.count(),
-    ]);
+    const profiles = await this.prisma.user.findMany({ take: limit, skip });
+    const totalCount = await this.prisma.user.count();
     if (!profiles || profiles.length === 0) {
       throw new NotFoundException();
     }
@@ -73,5 +71,8 @@ export class ProfileService {
       where: { id: profileID },
       data: profileData,
     });
+  }
+  async FindUserByEmail(email: string) {
+    return this.prisma.user.findUnique({ where: { email: email } });
   }
 }

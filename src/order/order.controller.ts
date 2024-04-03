@@ -6,14 +6,17 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 import { CreateOrderDto } from './dto/createOrder.dto';
 import OrderService from './order.service';
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { UpdateVacancyDto } from "../vacancies/dto/updateVacancy.dto";
-import { UpdateOrderDto } from "./dto/updateOrder.dto";
+import { UpdateVacancyDto } from '../vacancies/dto/updateVacancy.dto';
+import { UpdateOrderDto } from './dto/updateOrder.dto';
+import { Profile } from '../profile/profile.interface';
+import { Order } from './order.interface';
 @Controller('order')
 export default class OrderController {
   constructor(private readonly orderService: OrderService) {}
@@ -31,8 +34,10 @@ export default class OrderController {
   @ApiResponse({ status: 200, description: 'Returns all orders.' })
   @Get()
   @UsePipes(ValidationPipe)
-  getAllOrders() {
-    return this.orderService.getAllOrders();
+  async getAllOrders(
+    @Query('page') page: number = 1,
+  ): Promise<{ orders: Order[]; totalCount: number }> {
+    return this.orderService.getAllOrders(page);
   }
 
   @ApiTags('Order')

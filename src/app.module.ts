@@ -12,6 +12,7 @@ import { TimeInterceptor } from './timing.interceptor';
 import { PrismaService } from './prisma.service';
 import { DatabaseModule } from './database.module';
 import { AuthModule } from './auth/auth.module';
+import { TokenModule } from './token/token.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { AuthModule } from './auth/auth.module';
     ProfileModule,
     DatabaseModule,
     AuthModule,
+    TokenModule,
   ],
   controllers: [AppController],
   providers: [

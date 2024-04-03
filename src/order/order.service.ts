@@ -2,20 +2,26 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateOrderDto } from './dto/createOrder.dto';
 import { Order } from './order.interface';
 import { PrismaClient } from '@prisma/client';
-import { UpdateVacancyDto } from "../vacancies/dto/updateVacancy.dto";
-import { Vacancy } from "../vacancies/vacancy.interface";
-import { UpdateOrderDto } from "./dto/updateOrder.dto";
+import { UpdateVacancyDto } from '../vacancies/dto/updateVacancy.dto';
+import { Vacancy } from '../vacancies/vacancy.interface';
+import { UpdateOrderDto } from './dto/updateOrder.dto';
+import { Profile } from '../profile/profile.interface';
 @Injectable()
 export default class OrderService {
   // private lastOrderId = 0;
   // private order: Order[] = [];
   constructor(private readonly prisma: PrismaClient) {}
-  async getAllOrders(): Promise<Order[]> {
-    const services = await this.prisma.service.findMany();
-    if (!services || services.length === 0) {
+  async getAllOrders(
+    page: number,
+  ): Promise<{ orders: Order[]; totalCount: number }> {
+    const limit = 10;
+    const skip = (page - 1) * limit;
+    const orders = await this.prisma.service.findMany({ take: limit, skip });
+    const totalCount = await this.prisma.service.count();
+    if (!orders || orders.length === 0) {
       throw new NotFoundException();
     }
-    return services;
+    return { orders, totalCount };
   }
   async getOrderById(orderID: number): Promise<Order | null> {
     const order = await this.prisma.service.findUnique({

@@ -5,10 +5,11 @@ import {
   Get,
   Param,
   Post,
-  Put, Query,
+  Put,
+  Query,
   UsePipes,
-  ValidationPipe
-} from "@nestjs/common";
+  ValidationPipe,
+} from '@nestjs/common';
 import { ProfileService } from './profile.service';
 import {
   ApiBody,
@@ -20,6 +21,7 @@ import {
 import { CreateProfileDto } from './dto/createProfile.dto';
 import { UpdateVacancyDto } from '../vacancies/dto/updateVacancy.dto';
 import { UpdateProfileDto } from './dto/updateProfile.dto';
+import { Profile } from './profile.interface';
 
 @Controller('/profile')
 export default class ProfileController {
@@ -33,12 +35,12 @@ export default class ProfileController {
   @ApiResponse({ status: 200, description: 'Returns all profiles.' })
   @Get()
   @UsePipes(ValidationPipe)
-  getAllProfiles(
+  async getAllProfiles(
     @Query('page') page: number = 1,
-    @Query('limit') limit: number = 3,
-  ) {
-    return this.profileService.getAllProfiles(page, limit);
+  ): Promise<{ profiles: Profile[]; totalCount: number }> {
+    return this.profileService.getAllProfiles(page);
   }
+
   @ApiTags('Profile')
   @ApiOperation({ summary: 'Get profile by ID' })
   @ApiParam({

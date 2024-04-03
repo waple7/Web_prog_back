@@ -7,5 +7,6 @@ import { PrismaClient } from '@prisma/client';
   imports: [],
   controllers: [ProfileController],
   providers: [ProfileService, PrismaClient],
+  exports: [ProfileService],
 })
 export class ProfileModule {}
