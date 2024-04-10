@@ -119,7 +119,6 @@ function showToastError(message) {
 }
 
 // Подписываемся на событие 'success' от сервера
-// Подписываемся на событие 'success' от сервера
 socket.on('success', function (payload) {
     // Извлекаем сообщение об успешном создании карточки из объекта payload
     const message = payload.successMessage;
