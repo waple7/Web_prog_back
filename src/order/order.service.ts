@@ -2,10 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateOrderDto } from './dto/createOrder.dto';
 import { Order } from './order.interface';
 import { PrismaClient } from '@prisma/client';
-import { UpdateVacancyDto } from '../vacancies/dto/updateVacancy.dto';
-import { Vacancy } from '../vacancies/vacancy.interface';
 import { UpdateOrderDto } from './dto/updateOrder.dto';
-import { Profile } from '../profile/profile.interface';
 @Injectable()
 export default class OrderService {
   // private lastOrderId = 0;

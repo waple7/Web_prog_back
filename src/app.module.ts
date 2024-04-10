@@ -13,7 +13,7 @@ import { PrismaService } from './prisma.service';
 import { DatabaseModule } from './database.module';
 import { AuthModule } from './auth/auth.module';
 import { TokenModule } from './token/token.module';
-
+import { SupportGateway } from './support/support.gateway';
 @Module({
   imports: [
     ServeStaticModule.forRoot({
@@ -26,6 +26,7 @@ import { TokenModule } from './token/token.module';
     DatabaseModule,
     AuthModule,
     TokenModule,
+    SupportGateway,
   ],
   controllers: [AppController],
   providers: [

@@ -40,17 +40,17 @@ export class AuthController {
   login(@Body() dto: UserLoginDto): Promise<AuthUserResponse> {
     return this.authService.loginProfile(dto);
   }
-  @UseGuards(JwtAuthGuard)
-  // этот роут защищен гвардом который требует чтобы пользователь был
-  // авторизован
-  @ApiTags('Auth')
-  @ApiResponse({
-    status: 200,
-    description: 'user is authorized',
-    // type: AuthUserResponse,
-  })
-  @Post('authGuard')
-  authGuard() {
-    return true;
-  }
+  // @UseGuards(JwtAuthGuard)
+  // // этот роут защищен гвардом который требует чтобы пользователь был
+  // // авторизован
+  // @ApiTags('Auth')
+  // @ApiResponse({
+  //   status: 200,
+  //   description: 'user is authorized',
+  //   // type: AuthUserResponse,
+  // })
+  // @Post('authGuard')
+  // authGuard() {
+  //   return true;
+  // }
 }

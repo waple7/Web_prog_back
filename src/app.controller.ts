@@ -31,6 +31,14 @@ export class AppController {
     };
   }
   @ApiTags('header')
+  @Get('support')
+  @Render('support')
+  getSupport() {
+    return {
+      title: 'Support',
+    };
+  }
+  @ApiTags('header')
   @Get('team')
   @Render('team')
   getTeam() {
