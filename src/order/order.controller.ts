@@ -108,10 +108,10 @@ export default class OrderController {
   @ApiResponse({ status: 404, description: 'Order not found.' })
   @UsePipes(ValidationPipe)
   @Delete(':id')
-  @UseFilters(CustomExceptionFilter)
-  async deleteOrder(@Param('id') id: string) {
-    this.orderService.deleteOrder(Number(id));
-  }
+  // @UseFilters(CustomExceptionFilter)
+  // async deleteOrder(@Param('id') id: string) {
+  //   this.orderService.deleteOrder(Number(id));
+  // }
   @ApiTags('Order')
   @ApiOperation({ summary: 'Replace existing order' })
   @ApiParam({ name: 'id', type: 'number' })

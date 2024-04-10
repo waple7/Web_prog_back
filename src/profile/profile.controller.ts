@@ -94,10 +94,10 @@ export default class ProfileController {
       },
     },
   })
-  @UseFilters(ProfileExceptionFilter)
-  async createProfile(@Body() profile: CreateProfileDto) {
-    return this.profileService.createProfile(profile);
-  }
+  // @UseFilters(ProfileExceptionFilter)
+  // async createProfile(@Body() profile: CreateProfileDto) {
+  //   return this.profileService.createProfile(profile);
+  // }
 
   @ApiTags('Profile')
   @ApiOperation({ summary: 'Delete profile by ID' })

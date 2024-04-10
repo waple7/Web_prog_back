@@ -92,10 +92,10 @@ export default class VacanciesController {
   })
   @Post(':id')
   @UsePipes(ValidationPipe)
-  @UseFilters(VacancyExceptionFilter)
-  async createVacancy(@Body() vacancy: CreateVacancyDto) {
-    return this.vacanciesService.createVacancy(vacancy);
-  }
+  // @UseFilters(VacancyExceptionFilter)
+  // async createVacancy(@Body() vacancy: CreateVacancyDto) {
+  //   return this.vacanciesService.createVacancy(vacancy);
+  // }
   // POST. Используется для отправки данных на сервер с целью создания новой сущности (в данном случае, нового поста).
   //   // Декоратор @Body(): Извлекает данные из тела запроса
   @ApiTags('Vacancies')

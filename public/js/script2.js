@@ -17,11 +17,11 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     function createAndSaveCard(title, content) {
-        if (content.trim() === '') { // если попробовать сделать запрос с пробелом от сработает toaster
-            showToastError('Ошибка: Неправильный запрос');
+        if (content.trim() === '') {
+            sendInvalidRequest('');
             return;
         }
-
+        sendSuccessMessage('Карточка успешно создана');
         const cardData = { title, content };
         const card = createCard(cardData);
 
@@ -32,15 +32,21 @@ document.addEventListener('DOMContentLoaded', function () {
         attachDeleteHandler(card);
     }
 
-    function showToastError(message) {
-        Toastify({
-            text: message,
-            duration: 3000,
-            gravity: 'top',
-            position: 'left',
-            backgroundColor: 'linear-gradient(to right, #AA95DA, #AA95DA)',
-        }).showToast();
+
+    function sendInvalidRequest(errorMessage) {
+        // Создаем объект для отправки на сервер
+        const payload = { errorMessage };
+
+        // Отправляем на сервер сообщение об ошибке
+        socket.emit('invalidRequest', payload);
     }
+    function sendSuccessMessage(successMessage) {
+        const payload = { successMessage };
+
+        // Отправляем сообщение о успешном создании карточки на сервер
+        socket.emit('success', payload);
+    }
+
 
     function attachDeleteHandler(card) {
         const deleteBtn = card.querySelector('button');
@@ -92,3 +98,43 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 });
+
+// Создаем WebSocket соединение
+const socket = io(window.location.origin);
+
+// Подписываемся на событие 'error' от сервера
+socket.on('error', function (errorMessage) {
+    // Выводим сообщение об ошибке
+    showToastError(errorMessage);
+});
+
+function showToastError(message) {
+    Toastify({
+        text: message,
+        duration: 3000,
+        gravity: 'top',
+        position: 'left',
+        backgroundColor: 'linear-gradient(to right, #AA95DA, #AA95DA)',
+    }).showToast();
+}
+
+// Подписываемся на событие 'success' от сервера
+// Подписываемся на событие 'success' от сервера
+socket.on('success', function (payload) {
+    // Извлекаем сообщение об успешном создании карточки из объекта payload
+    const message = payload.successMessage;
+    // Выводим сообщение о успешном создании карточки
+    showToastSuccess(message);
+});
+
+
+function showToastSuccess(message) {
+    Toastify({
+        text: message,
+        duration: 3000,
+        gravity: 'top',
+        position: 'left',
+        backgroundColor: 'linear-gradient(to right, #AA95DA, #AA95DA)',
+    }).showToast();
+}
+

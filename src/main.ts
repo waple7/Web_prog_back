@@ -5,6 +5,9 @@ import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import * as hbs from 'express-handlebars';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { ProfileExceptionFilter } from "./profile/exceptionProfile/exceptions";
+import { CustomExceptionFilter } from "./order/exceptionOrder/exceptions";
+import { VacancyExceptionFilter } from "./vacancies/exceptionVacancy/exceptions";
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -29,6 +32,10 @@ async function bootstrap() {
       layoutsDir: join(__dirname, '..', 'views/layouts'),
     }),
   );
+  app.useGlobalFilters(new ProfileExceptionFilter());
+  app.useGlobalFilters(new CustomExceptionFilter());
+  app.useGlobalFilters(new VacancyExceptionFilter());
+
   const configService = app.get(ConfigService);
   const port = configService.get('PORT', 2000);
   await app.listen(port);

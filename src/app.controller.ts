@@ -31,8 +31,8 @@ export class AppController {
     };
   }
   @ApiTags('header')
-  @Get('support')
-  @Render('support')
+  @Get('websocket')
+  @Render('websocket')
   getSupport() {
     return {
       title: 'Support',
