@@ -19,6 +19,7 @@ export class MyWebSocketGateway {
   @SubscribeMessage('success')
   handleSuccess(client: any, message: string) {
     // Отправляем сообщение всем клиентам
+
     this.server.emit('success', message);
   }
 }
