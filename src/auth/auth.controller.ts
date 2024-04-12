@@ -3,8 +3,10 @@ import { AuthService } from './auth.service';
 import { CreateProfileDto } from '../profile/dto/createProfile.dto';
 import { UserLoginDto } from './dto/UserLoginDto';
 import { AuthUserResponse } from './response/AuthUserResponse';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiHeader, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { JwtAuthGuard } from '../guards/jwt-guard';
+import { TokenDto } from './dto/tokenDto';
+import { AuthMiddleware } from "./middleware";
 
 @Controller('auth')
 export class AuthController {
@@ -36,21 +38,25 @@ export class AuthController {
     description: 'login not successful.',
     // type: AuthUserResponse,
   })
+  @ApiBearerAuth()
+  // @UseGuards(JwtAuthGuard)
   @Post('login')
   login(@Body() dto: UserLoginDto): Promise<AuthUserResponse> {
     return this.authService.loginProfile(dto);
   }
-  // @UseGuards(JwtAuthGuard)
-  // // этот роут защищен гвардом который требует чтобы пользователь был
-  // // авторизован
-  // @ApiTags('Auth')
-  // @ApiResponse({
-  //   status: 200,
-  //   description: 'user is authorized',
-  //   // type: AuthUserResponse,
-  // })
-  // @Post('authGuard')
-  // authGuard() {
-  //   return true;
-  // }
+  // этот роут защищен гвардом который требует чтобы пользователь был
+  // авторизован
+  @ApiTags('Auth')
+  @ApiResponse({
+    status: 200,
+    description: 'user is authorized',
+    // type: AuthUserResponse,
+  })
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @Post('authGuard')
+  authGuard(@Body() dto: TokenDto): string {
+    // В этом методе можно обрабатывать токен, который был передан в теле запроса
+    return 'User is authorized';
+  }
 }

@@ -72,7 +72,7 @@ export class ProfileService {
       data: profileData,
     });
   }
-  async FindUserByEmail(email: string) {
+  async FindUserByEmail(email: string): Promise<Profile | null> {
     return this.prisma.user.findUnique({ where: { email: email } });
   }
 }

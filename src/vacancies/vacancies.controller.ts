@@ -1,9 +1,12 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
+  Injectable,
   Param,
+  PipeTransform,
   Post,
   Put,
   Query,
@@ -26,6 +29,7 @@ import { Profile } from '../profile/profile.interface';
 import { Vacancy } from './vacancy.interface';
 import { ProfileExceptionFilter } from '../profile/exceptionProfile/exceptions';
 import { VacancyExceptionFilter } from './exceptionVacancy/exceptions';
+import { IsPageNumber } from '../validator/validate';
 
 @Controller('vacancy')
 export default class VacanciesController {
@@ -46,7 +50,7 @@ export default class VacanciesController {
   @UsePipes(ValidationPipe)
   @UseFilters(VacancyExceptionFilter)
   async getAllVacancies(
-    @Query('page') page: number = 1,
+    @Query('page', new IsPageNumber()) page: number = 1, // Применяем IsPageNumber внутри Query
   ): Promise<{ vacancies: Vacancy[]; totalCount: number }> {
     return this.vacanciesService.getAllVacancies(page);
   }

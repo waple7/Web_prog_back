@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { ProfileService } from '../profile/profile.service';
 import { CreateProfileDto } from '../profile/dto/createProfile.dto';
 import { UserLoginDto } from './dto/UserLoginDto';
@@ -40,4 +44,12 @@ export class AuthService {
     const token = await this.tokenService.generateJwtToken(dto.email);
     return { ...existProfile, token };
   }
+
+  // async FindUserByEmail(userEmail: string): Promise<any> {
+  //   const user = await this.profileService.FindUserByEmail(userEmail);
+  //   if (!user) {
+  //     throw new NotFoundException('User not found');
+  //   }
+  //   return user;
+  // }
 }

@@ -1,9 +1,12 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
+  Injectable,
   Param,
+  PipeTransform,
   Post,
   Put,
   Query,
@@ -25,7 +28,7 @@ import { UpdateProfileDto } from './dto/updateProfile.dto';
 import { Profile } from './profile.interface';
 import { CustomExceptionFilter } from '../order/exceptionOrder/exceptions';
 import { ProfileExceptionFilter } from './exceptionProfile/exceptions';
-
+import { IsPageNumber } from '../validator/validate';
 @Controller('/profile')
 export default class ProfileController {
   constructor(private readonly profileService: ProfileService) {}
@@ -40,7 +43,7 @@ export default class ProfileController {
   @Get()
   @UsePipes(ValidationPipe)
   async getAllProfiles(
-    @Query('page') page: number = 1,
+    @Query('page', new IsPageNumber()) page: number = 1, // Применяем IsPageNumber внутри Query
   ): Promise<{ profiles: Profile[]; totalCount: number }> {
     return this.profileService.getAllProfiles(page);
   }
@@ -94,11 +97,10 @@ export default class ProfileController {
       },
     },
   })
-  // @UseFilters(ProfileExceptionFilter)
-  // async createProfile(@Body() profile: CreateProfileDto) {
-  //   return this.profileService.createProfile(profile);
-  // }
-
+  @UseFilters(ProfileExceptionFilter)
+  async createProfile(@Body() profile: CreateProfileDto) {
+    return this.profileService.createProfile(profile);
+  }
   @ApiTags('Profile')
   @ApiOperation({ summary: 'Delete profile by ID' })
   @ApiParam({ name: 'id', type: 'number' })

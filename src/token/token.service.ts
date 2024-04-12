@@ -7,7 +7,7 @@ export class TokenService {
 
   async generateJwtToken(user) {
     const payload = { user };
-    return this.jwtService.sign(payload, {
+    return this.jwtService.signAsync(payload, {
       secret: 'MySecret',
       expiresIn: 86000,
     });

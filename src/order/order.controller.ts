@@ -1,9 +1,12 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
+  Injectable,
   Param,
+  PipeTransform,
   Post,
   Put,
   Query,
@@ -19,6 +22,7 @@ import { UpdateOrderDto } from './dto/updateOrder.dto';
 import { Profile } from '../profile/profile.interface';
 import { Order } from './order.interface';
 import { CustomExceptionFilter } from './exceptionOrder/exceptions';
+import { IsPageNumber } from '../validator/validate';
 @Controller('order')
 export default class OrderController {
   constructor(private readonly orderService: OrderService) {}
@@ -35,10 +39,9 @@ export default class OrderController {
   @ApiOperation({ summary: 'Get all orders' })
   @ApiResponse({ status: 200, description: 'Returns all orders.' })
   @Get()
-  @UsePipes(ValidationPipe)
-  @UseFilters(CustomExceptionFilter)
+  @UsePipes(new ValidationPipe({ transform: true })) // Используем ValidationPipe
   async getAllOrders(
-    @Query('page') page: number = 1,
+    @Query('page', new IsPageNumber()) page: number = 1, // Применяем IsPageNumber внутри Query
   ): Promise<{ orders: Order[]; totalCount: number }> {
     return this.orderService.getAllOrders(page);
   }

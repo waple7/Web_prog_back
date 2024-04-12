@@ -100,8 +100,8 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // Создаем WebSocket соединение
-const socket = io(window.location.origin);
-
+const socket = io(window.location.origin); //указывает библиотеке Socket.IO на адрес сервера, к которому нужно // установить соединение
+// (между клиентом и сервером)
 // Подписываемся на событие 'error' от сервера
 socket.on('error', function (errorMessage) {
     // Выводим сообщение об ошибке
@@ -136,4 +136,6 @@ function showToastSuccess(message) {
         backgroundColor: 'linear-gradient(to right, #AA95DA, #AA95DA)',
     }).showToast();
 }
-
+// при создании карточки на стороне клиента вызывается функция sendSuccessMessage(successMessage), которая отправляет сообщение на сервер через
+// веб-сокеты. Затем сервер обрабатывает это сообщение с помощью метода handleSuccess() в MyWebSocketGateway и отправляет его
+// обратно всем подключенным клиентам

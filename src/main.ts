@@ -5,9 +5,12 @@ import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import * as hbs from 'express-handlebars';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { ProfileExceptionFilter } from "./profile/exceptionProfile/exceptions";
-import { CustomExceptionFilter } from "./order/exceptionOrder/exceptions";
-import { VacancyExceptionFilter } from "./vacancies/exceptionVacancy/exceptions";
+import { ProfileExceptionFilter } from './profile/exceptionProfile/exceptions';
+import { CustomExceptionFilter } from './order/exceptionOrder/exceptions';
+import { VacancyExceptionFilter } from './vacancies/exceptionVacancy/exceptions';
+import { JwtStrategy } from "./strategy/jwt.strategy";
+import passport from "passport";
+import { AuthService } from "./auth/auth.service";
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
