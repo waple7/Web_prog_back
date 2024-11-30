@@ -5,14 +5,14 @@ https://worldnasanmi.onrender.com
 
 Radmir Naumenko
 
-User.Пользователь, у которого есть свой Id, имя, пароль и почта.
+User. User who has his own Id, name, password and mail.
 
-ListService.Имеется лист сервисов, отображается с помощью Id и заголовка.
+ListService. There is a list of services, displayed using Id and title.
 
-Service.Пользователь может выбрать в Service услугу из листа, которая ему нужна.
+Service. The user can select the service he needs from the list in Service.
 
-tegsVacancy. У нас есть Id нашего тега и его заголовок, для каждой игры свой тег.
+tegsVacancy. We have the Id of our tag and its title, each game has its own tag.
 
-Vacancy. Выставляется вакансия на сайт, заголовком,кратким описанием и тегом.
+Vacancy. A vacancy is posted on the site, with a title, short description and tag.
 
 ![diagram.png](public%2Fimg%2Fdiagram.png)
